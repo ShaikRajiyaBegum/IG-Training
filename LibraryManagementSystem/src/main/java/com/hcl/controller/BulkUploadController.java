@@ -34,7 +34,7 @@ public class BulkUploadController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BulkUploadController.class);
 
 	@GetMapping
-	@Scheduled(cron = "0 * 04 * * ?")
+	@Scheduled(cron = "0 10 * * 1")//Every monday at 10AM
 	public BatchStatus load() throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
 			JobRestartException, JobInstanceAlreadyCompleteException {
 
