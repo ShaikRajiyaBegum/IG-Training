@@ -1,11 +1,17 @@
+
 package com.hcl.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.hcl.model.BookInfo;
 
-@Repository
+//@Repository
 public interface BookInfoRepository extends JpaRepository<BookInfo, Long> {
+
+	BookInfo findByBookName(String bookName);
+
+	BookInfo findByBookPublication(String bookPublication);
+
+	BookInfo findByAuthor(String author);
 
 }
