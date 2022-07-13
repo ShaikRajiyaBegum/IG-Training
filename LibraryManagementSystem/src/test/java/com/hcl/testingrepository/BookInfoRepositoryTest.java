@@ -53,42 +53,7 @@ public class BookInfoRepositoryTest {
 		assertThat(booksList.size()).isGreaterThan(0);
 
 	}
-	// Test to get Book by bookName
-
-	@DisplayName("test_SearchByBookName")
-	@Test
-	public void testSearchByBookName() {
-		book = BookInfo.builder().bookId(1L).bookName("java").author("narayana").bookPages(120L)
-				.bookPublication(" sam publications").activeFlag(1).build();
-
-		assertEquals(book, bookInfoRepository.findByBookName("abc"));
-
-	}
-	// Test to get Book by bookPublication
-
-	@DisplayName("test_SearchByBookPublication")
-	@Test
-	public void testSearchByBookPublication() {
-		book = BookInfo.builder().bookId(1L).bookName("java").author("narayana").bookPages(120L)
-				.bookPublication(" sam publications").activeFlag(1).build();
-
-		assertEquals(book, bookInfoRepository.findByBookPublication("sam publications"));
-
-	}
-
-	// Test to get Book by bookAuthor
-
-	@DisplayName("test_SearchByAuthor")
-	@Test
-	public void testSearchByAuthor() {
-		book = BookInfo.builder().bookId(1L).bookName("java").author("narayana").bookPages(120L)
-				.bookPublication(" sam publications").activeFlag(1).build();
-		BookInfo bookByAuthor = bookInfoRepository.findByAuthor(book.getAuthor());
-		assertNotNull(bookByAuthor);
-		assertThat(bookByAuthor.getAuthor()).isEqualTo("narayana");
-
-	}
-
+	
 	// Test for getting book by bookId
 
 	@DisplayName("test_SearchByBookId")
