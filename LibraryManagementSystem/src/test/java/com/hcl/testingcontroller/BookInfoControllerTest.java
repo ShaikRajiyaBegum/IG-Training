@@ -1,18 +1,12 @@
 
 package com.hcl.testingcontroller;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -25,18 +19,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcl.controller.BookInfoController;
 import com.hcl.model.BookInfo;
 import com.hcl.serviceimpl.BookInfoServiceImpl;
 
-@ComponentScan(basePackages = "com.hcl")
+@ComponentScan(basePackages = "com.hcl.testingcontroller")
 @AutoConfigureMockMvc
 @ContextConfiguration
 @SpringBootTest(classes = { BookInfoControllerTest.class })
@@ -52,7 +45,7 @@ class BookInfoControllerTest {
 	@Mock
 	BookInfoServiceImpl bookInfoService;
 
-	private BookInfo book;
+	BookInfo bookInfo;
 
 	List<BookInfo> books;
 
@@ -61,146 +54,87 @@ class BookInfoControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(bookInfoController).build();
 	}
 
-	// createBook
-	@DisplayName("test_CreateBook")
+	
+
+	// Search book By bookId
+	@DisplayName("test_SearchByBookId")
 	@Test
 	@Order(1)
-	public void test_CreateBook() throws Exception {
-
-		book = new BookInfo().builder().bookId(1L).bookName("materials").bookPublication("sanaya").build();
-
-		when(bookInfoService.createBook(book)).thenReturn(book);
-
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonbody = mapper.writeValueAsString(book);
-
-		this.mockMvc.perform(post("/create/{libId}").content(jsonbody).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated()).andDo(print());
-
-	}
-
-	// updateBook
-	@DisplayName("test_UpdateBook")
-	@Test
-	@Order(2)
-	public void test_UpdateBook() throws Exception {
-
-		book = new BookInfo().builder().bookId(2L).bookName("materials").bookPublication("sanaya").build();
-		Long libId = 1L;
-
-		when(bookInfoService.searchByBookId(libId)).thenReturn(book);
-		when(bookInfoService.updateBook(book)).thenReturn(book);
-
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonbody = mapper.writeValueAsString(book);
-
-		this.mockMvc.perform(put("/update/{libId}", libId).content(jsonbody).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andDo(print());
-
-	}
-
-	// SearchBook By BookId
-	@DisplayName("testSearchByBookId")
-	@Test
-	@Order(3)
 	public void testSearchByBookId() throws Exception {
-		book = new BookInfo().builder().bookId(1L).bookName("materials").bookPublication("sanaya").build();
+		bookInfo = BookInfo.builder().bookId(1L).bookName("materials").bookPublication("sanaya").build();
 		Long bookId = 1L;
 
-		when(bookInfoService.searchByBookId(bookId)).thenReturn(book);
+		when(bookInfoService.searchByBookId(bookId)).thenReturn(bookInfo);
 
-		this.mockMvc.perform(get("/search/{bookId}", bookId)).andExpect(status().isFound())
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookId").value(1L))
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookName").value("materials"))
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookPublication").value("sanaya")).andDo(print());
-
-	}
-
-	// SearchBook By BookPublication
-	@DisplayName("test_SearchByBookPublication")
-	@Test
-	@Order(4)
-	public void testSearchByBookPublication() throws Exception {
-		book = new BookInfo().builder().bookId(1L).bookName("materials").bookPublication("sanaya").build();
-		String bookPublication = "sanaya";
-
-		when(bookInfoService.searchByBookName(bookPublication)).thenReturn(book);
-
-		this.mockMvc.perform(get("/search/bookPublication").param("bookPublication", "sanaya"))
-				.andExpect(status().isFound()).andExpect(MockMvcResultMatchers.jsonPath(".bookId").value(1L))
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookName").value("materials"))
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookPublication").value("sanaya")).andDo(print());
+		ResponseEntity<BookInfo> res = bookInfoController.searchByBookId(bookId);
+		assertEquals(HttpStatus.FOUND, res.getStatusCode());
+		assertEquals(bookId, res.getBody().getBookId());
 
 	}
 
-	// SearchBook By BookName
+	// Search book By BookName
 	@DisplayName("test_SearchByBookName")
 	@Test
-	@Order(5)
+	@Order(2)
 	public void testSearchByBookName() throws Exception {
-		book = new BookInfo().builder().bookId(1L).bookName("materials").bookPublication("sanaya").build();
+		bookInfo = BookInfo.builder().bookId(1L).bookName("materials").bookPublication("sanaya").build();
 		String bookName = "materials";
 
-		when(bookInfoService.searchByBookName(bookName)).thenReturn(book);
+		when(bookInfoService.searchByBookName(bookName)).thenReturn(bookInfo);
 
-		this.mockMvc.perform(get("/search/bookName").param("bookName", "materials")).andExpect(status().isFound())
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookId").value(1L))
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookName").value("materials"))
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookPublication").value("sanaya")).andDo(print());
+		ResponseEntity<BookInfo> res = bookInfoController.searchByBookName(bookName);
+		assertEquals(HttpStatus.FOUND, res.getStatusCode());
+		assertEquals(bookName, res.getBody().getBookName());
 
 	}
 
-	// SearchBook By BookAuthor
-	@DisplayName("test_searchByAuthor")
+	// Search book By BookPublication
+	@DisplayName("test_SearchByBookPublication")
 	@Test
-	@Order(6)
-	public void testSearchByAuthor() throws Exception {
-		book = new BookInfo().builder().bookId(1L).bookName("materials").bookPublication("sanaya").author("narayana")
-				.build();
-		String author = "narayana";
+	@Order(3)
+	public void testSearchByBookPublication() throws Exception {
+		bookInfo = BookInfo.builder().bookId(1L).bookName("materials").bookPublication("sanaya").build();
+		String bookPublication = "sanaya";
 
-		when(bookInfoService.searchByAuthor(author)).thenReturn(book);
+		when(bookInfoService.searchByBookPublication(bookPublication)).thenReturn(bookInfo);
 
-		this.mockMvc.perform(get("/search/author").param("author", "narayana")).andExpect(status().isFound())
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookId").value(1L))
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookName").value("materials"))
-				.andExpect(MockMvcResultMatchers.jsonPath(".bookPublication").value("sanaya"))
-				.andExpect(MockMvcResultMatchers.jsonPath(".author").value("narayana")).andDo(print());
+		ResponseEntity<BookInfo> res = bookInfoController.searchByBookPublication(bookPublication);
+		assertEquals(HttpStatus.FOUND, res.getStatusCode());
+		assertEquals(bookPublication, res.getBody().getBookPublication());
 
 	}
 
-	// get all books
+	// Search book By author
+	@DisplayName("test_SearchByAuthor")
+	@Test
+	@Order(4)
+	public void testSearchByAuthor() throws Exception {
+		bookInfo = BookInfo.builder().bookId(1L).bookName("materials").author("Ram").bookPublication("sanaya").build();
+		String author = "Ram";
+
+		when(bookInfoService.searchByAuthor(author)).thenReturn(bookInfo);
+
+		ResponseEntity<BookInfo> res = bookInfoController.searchByAuthor(author);
+		assertEquals(HttpStatus.FOUND, res.getStatusCode());
+		assertEquals(author, res.getBody().getAuthor());
+
+	}
+
+	// Search AllBooks
 	@DisplayName("test_SearchAllBooks")
 	@Test
-	@Order(7)
+	@Order(5)
 	public void testSearchAllBooks() throws Exception {
-		book = new BookInfo().builder().bookName("materials").bookPublication("sanaya").build();
 
-		books = new ArrayList<>();
-		books.add(book);
+		books = new ArrayList<BookInfo>();
+		books.add(BookInfo.builder().bookId(1L).bookName("materials").author("Ram").bookPublication("sanaya").build());
 
 		when(bookInfoService.searchAllBooks()).thenReturn(books);
-
-		this.mockMvc.perform(get("/search/all")).andExpect(status().isFound()).andDo(print());
-
-	}
-
-	// delete By BookId
-	@DisplayName("test_DeleteByBookId")
-	@Test
-	@Order(8)
-	public void testDeleteByBookId() throws Exception {
-		book = new BookInfo().builder().bookId(1L).bookName("materials").bookPublication("sanaya").build();
-		Long bookId = 1L;
-
-		when(bookInfoService.deleteByBookId(bookId)).thenReturn(book);
-
-		this.mockMvc.perform(delete("/delete/{bookId}", bookId)).andExpect(status().isOk());
+		ResponseEntity<List<BookInfo>> res = bookInfoController.searchAllBooks();
+		assertEquals(HttpStatus.FOUND, res.getStatusCode());
+		assertEquals(1, res.getBody().size());
 
 	}
 
-	@AfterEach
-	public void endData() {
-		book = null;
-	}
+	
 }

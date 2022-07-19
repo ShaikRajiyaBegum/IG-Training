@@ -21,7 +21,7 @@ public class Processor implements ItemProcessor<BookInfo, BookInfo> {
 		LOGGER.info("Processor:: Processing starts......::input" + bookInfo);
 
 		bookInfo.setCreatedBy(User.builder().userId(1L).build());
-		
+
 		bookInfo.setActiveFlag(1);
 
 		bookInfo.setCreatedOn(new Date());

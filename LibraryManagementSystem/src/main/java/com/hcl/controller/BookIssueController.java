@@ -29,7 +29,7 @@ public class BookIssueController {
 
 	// create book issue
 	@PostMapping("/create/{userId}/{libId}/{bookId}")
-	public ResponseEntity<?> createBookIsuue(@PathVariable("userId") Long userId, @PathVariable("libId") Long libId,
+	public ResponseEntity<BookIssue> createBookIsuue(@PathVariable("userId") Long userId, @PathVariable("libId") Long libId,
 			@PathVariable("bookId") Long bookId, @RequestBody BookIssue bookIssue) {
 
 		LOGGER.info("BookIssueController:: createBookIsuue!!!!input :" + bookIssue);
@@ -44,7 +44,7 @@ public class BookIssueController {
 	// get all BookIssues
 
 	@GetMapping("/getAllIssues")
-	public ResponseEntity<?> getAllIssues() {
+	public ResponseEntity<List<BookIssue>> getAllIssues() {
 		LOGGER.info("BookIssueController:: getAllIssues!!!!input :");
 		List<BookIssue> bookIssues = bookIssueService.getAllIssues();
 
@@ -56,7 +56,7 @@ public class BookIssueController {
 	// Get Transaction by status
 
 	@GetMapping("/get/status")
-	public ResponseEntity<?> getIssueByStatus(@RequestParam String status) {
+	public ResponseEntity<List<BookIssue>> getIssueByStatus(@RequestParam String status) {
 		LOGGER.info("UserController:: updateUser!!!!input :" + status);
 		List<BookIssue> bookIssues = bookIssueService.getIssueByStatus(status);
 

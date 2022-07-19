@@ -31,7 +31,7 @@ public class UserRepositoryTest {
 				.userMobileNo("1234567890").userAddress("Hyd").userType("user").build();
 	}
 
-	@DisplayName("Junit test for add user")
+	@DisplayName("test_AddUser")
 	@Test
 	public void testAddUser() {
 		User savedUser = userRepository.save(user);
@@ -39,23 +39,20 @@ public class UserRepositoryTest {
 		assertThat(savedUser.getUserId()).isGreaterThan(0);
 	}
 
-	@DisplayName("Junit Test for get getAllUsers")
+	@DisplayName("test_GetAllUsers")
 	@Test
 	public void testGetAllUsers() {
 		User user1 = User.builder().userName("rajiya1").userAge(26L).userEmailId("rajiya430@gmail.com")
 				.userGender("Female").userMobileNo("1234567890").userAddress("Hyd").userType("user").build();
 
 		users = new ArrayList<>();
-		users.add(user1);
-	//	users.add(user);
-		//userRepository.saveAll(users);
+		users.add(user1);		
 		List<User> userList = userRepository.findAll();
 		assertThat(userList).isNotNull();
 		assertThat(userList.size()).isGreaterThan(0);
-		//assertThat(userList.size()).isEqualTo(1);
-	}
+		}
 
-	@DisplayName("Junit test for get getByUserId")
+	@DisplayNametest_GetByUserId")
 	@Test
 	public void testGetByUserId() {
 		userRepository.save(user);
@@ -63,7 +60,7 @@ public class UserRepositoryTest {
 		assertThat(savedUser).isNotNull();
 	}
 
-	@DisplayName("Junit test for update user")
+	@DisplayName("test_UpdateUser")
 	@Test
 	public void testUpdateUser() {
 		userRepository.save(user);

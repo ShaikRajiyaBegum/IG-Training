@@ -1,5 +1,6 @@
 package com.hcl.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -29,8 +30,9 @@ public class UserController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	// add User
+
 	@PostMapping("/add")
-	public ResponseEntity<?> addUser(@RequestBody User user) {
+	public ResponseEntity<User> addUser(@RequestBody User user) {
 		LOGGER.info("UserController:: addUser!!!!input :" + user);
 		User user1 = userService.addUser(user);
 
@@ -39,20 +41,24 @@ public class UserController {
 
 	}
 
+	
+
 	// get all users
 	@GetMapping("/getAllUsers")
-	public ResponseEntity<?> getAllUsers() {
+	public ResponseEntity<List<User>> getAllUsers() {
 		LOGGER.info("UserController:: getAllUsers!!!!input :");
-		List<User> users = userService.getAllUsers();
+
+		List<User> users = new ArrayList<>();
+		users = userService.getAllUsers();
 
 		LOGGER.info("UserController:: getAllUsers!!!output :" + users);
-		return new ResponseEntity<>(users, HttpStatus.FOUND);
+		return new ResponseEntity<List<User>>(users, HttpStatus.FOUND);
 
 	}
 
 	// get user by id
 	@GetMapping("/get/{userId}")
-	public ResponseEntity<?> getByUserId(@PathVariable Long userId) {
+	public ResponseEntity<User> getByUserId(@PathVariable Long userId) {
 		LOGGER.info("UserController:: getUserByUserId!!!!input :" + userId);
 		User user = userService.getByUserId(userId);
 
@@ -63,7 +69,7 @@ public class UserController {
 
 	// update user
 	@PutMapping("/update")
-	public ResponseEntity<?> updateUser(@RequestBody User user) {
+	public ResponseEntity<User> updateUser(@RequestBody User user) {
 		LOGGER.info("UserController:: updateUser!!!!input :" + user);
 		User user1 = userService.updateUser(user);
 

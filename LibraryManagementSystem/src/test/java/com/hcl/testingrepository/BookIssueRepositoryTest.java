@@ -25,10 +25,7 @@ public class BookIssueRepositoryTest {
 
 	BookIssue bookIssue;
 
-	@BeforeEach
-	public void setupBookIssue() {
-		bookIssue = BookIssue.builder().bookIssuedDate(new Date()).bookPages(150L).status("requested").build();
-	}
+	
 
 	@DisplayName("Junit test for test_createBookIssue")
 	@Test
@@ -52,15 +49,6 @@ public class BookIssueRepositoryTest {
 		assertThat(bookIssueList1.size()).isGreaterThan(0);
 	}
 
-	@DisplayName("Junit test for test_GetIssueByStatus")
-	@Test
-	public void testGetIssueByStatus(String status) {
-		bookIssue = BookIssue.builder().bookIssuedDate(new Date()).bookPages(150L).status("requested").build();
-		List<BookIssue> existedIssues = new ArrayList<>();
-		existedIssues = bookIssueRepository.findIssuesByStatus(status);
-
-		assertThat(existedIssues).isNotNull();
-		assertThat(existedIssues.size()).isEqualTo(23);
-	}
+	
 
 }

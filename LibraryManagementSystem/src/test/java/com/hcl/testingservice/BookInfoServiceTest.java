@@ -40,12 +40,7 @@ class BookInfoServiceTest {
 	BookInfo book;
 	List<BookInfo> books;
 
-	@BeforeEach
-	public void initData() {
-		BookInfo book = BookInfo.builder().bookId(1L).bookName("java").author("narayana").bookPages(120L)
-				.bookPublication(" sam publications").activeFlag(1).build();
-
-	}
+	
 
 	// Test Create Book
 
@@ -105,7 +100,7 @@ class BookInfoServiceTest {
 
 	}
 
-	// Test to get Book by bookAuthor
+	// Test to get Book by Author
 
 	@DisplayName("test_SearchByAuthor")
 	@Test
@@ -145,9 +140,6 @@ class BookInfoServiceTest {
 
 	}
 
-	@AfterEach
-	public void endData() {
-		book = null;
-	}
+	
 
 }

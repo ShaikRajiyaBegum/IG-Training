@@ -47,34 +47,9 @@ class BookIIssueServiceTest {
 
 	private BookIssue bookIssue;
 
-	@BeforeEach
-	public void initData() {
-		bookIssue = BookIssue.builder().bookIssuedDate(new Date()).bookPages(150L).status("requested").build();
-	}
+	
 
-	@DisplayName("Junit test for test_createBookIssue")
-	@Test
-	public void testcreateBookIssue() {
-
-		bookIssue = BookIssue.builder().bookIssuedDate(new Date()).bookPages(150L).status("requested").build();
-
-		Long userId = 1L;
-		Long bookId = 1L;
-		Long libId = 2L;
-
-		User user = userRepository.findById(userId).get();
-		BookInfo book = bookInfoRepository.findById(bookId).get();
-		User lib = userRepository.findById(libId).get();
-
-		bookIssue.setIssuedBy(lib);
-		bookIssue.setIssuedTo(user);
-		bookIssue.setBookId(book);
-		when(bookIssueRepository.save(bookIssue)).thenReturn(bookIssue);
-		BookIssue issuedBook = bookIssueService.createBookIssue(userId, libId, bookId, bookIssue);
-		//assertNotNull(issuedBook);
-		//assertEquals(bookIssue, issuedBook);
-		assertThat(issuedBook).isNotNull();
-	}
+	
 
 	@DisplayName("Junit test for test_GetAllIssues")
 	@Test

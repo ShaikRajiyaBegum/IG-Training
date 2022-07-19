@@ -39,20 +39,19 @@ public class UserServiceTest {
 	List<User> users;
 
 	// Test addUser
-	@DisplayName("Test for addUser")
+	@DisplayName("test_AddUser")
 	@Test
 	@Order(1)
 	public void testAddUser() {
 		user = new User(1L, "Rajiya", 25L, "F", "Rajiya@gmail.com", "1234567890", "hyd", "lib", "active");
 		when(userRepository.save(user)).thenReturn(user);
 
-		// assertNotNull(user);
 		assertEquals(user, userService.addUser(user));
 	}
 
 	// Test to getAllUsers
 
-	@DisplayName("test for getAllUsers")
+	@DisplayName("test_GetAllUsers")
 	@Test
 	@Order(2)
 	public void testGetAllUsers() {
@@ -65,7 +64,7 @@ public class UserServiceTest {
 
 	// Test for getting user byId
 
-	@DisplayName("test to get user ById ")
+	@DisplayName("test_GetByUserId ")
 	@Test
 	@Order(3)
 	public void testGetByUserId() {
@@ -77,14 +76,14 @@ public class UserServiceTest {
 		assertThat(userById).isNotNull();
 	}
 
-	// }
+	
 
 	// Test to Update user
 
-	@DisplayName("test for Update user")
+	@DisplayName("test_UpdateUser")
 	@Test
 	@Order(4)
-	public void testupdateUser() {
+	public void testUpdateUser() {
 		user = new User(1L, "Rajiya", 25L, "F", "Rajiya@gmail.com", "1234567890", "hyd", "lib", "active");
 		Mockito.when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
 
@@ -94,21 +93,6 @@ public class UserServiceTest {
 
 	}
 
-	/*
-	 * // Test to Delete user
-	 * 
-	 * @DisplayName("test for deleteUser")
-	 * 
-	 * @Test
-	 * 
-	 * @Order(5)
-	 * 
-	 * @Disabled public void testdeleteUser() { user.setUserStatus("inactive"); Long
-	 * id=user.getUserId(); when(userRepository.save(user)).thenReturn(user);
-	 * 
-	 * assertEquals("inactive"a,userService.deleteUser(id) );
-	 * 
-	 * }
-	 */
+	
 
 }

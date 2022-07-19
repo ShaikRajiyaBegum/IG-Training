@@ -41,7 +41,7 @@ public class BookInfoController {
 	// Create Book
 
 	@PostMapping("/create/{libId}")
-	public ResponseEntity<?> createBook(@PathVariable Long libId, @RequestBody BookInfo bookInfo) {
+	public ResponseEntity<BookInfo> createBook(@PathVariable Long libId, @RequestBody BookInfo bookInfo) {
 
 		LOGGER.info("BookInfoController:: createBook!!!!input :" + libId);
 
@@ -63,7 +63,7 @@ public class BookInfoController {
 	// SearchBook By BookId
 
 	@GetMapping("/search/{bookId}")
-	public ResponseEntity<?> searchByBookId(@PathVariable Long bookId) {
+	public ResponseEntity<BookInfo> searchByBookId(@PathVariable Long bookId) {
 
 		
 		BookInfo book = bookInfoService.searchByBookId(bookId);
@@ -104,7 +104,7 @@ public class BookInfoController {
 	// SearchBook ByName
 
 	@GetMapping("/search/bookName")
-	public ResponseEntity<?> searchByBookName(@RequestParam String bookName) {
+	public ResponseEntity<BookInfo> searchByBookName(@RequestParam String bookName) {
 
 		return new ResponseEntity<>(bookInfoService.searchByBookName(bookName), HttpStatus.FOUND);
 	}
@@ -112,7 +112,7 @@ public class BookInfoController {
 	// SearchBook By BookPublication
 
 	@GetMapping("/search/bookPublication")
-	public ResponseEntity<?> searchByBookPublication(@RequestParam String bookPublication) {
+	public ResponseEntity<BookInfo> searchByBookPublication(@RequestParam String bookPublication) {
 
 		LOGGER.info("BookInfoController:: searchByBookPublication!!!!input :" + bookPublication);
 		BookInfo book = bookInfoService.searchByBookPublication(bookPublication);
@@ -132,7 +132,7 @@ public class BookInfoController {
 	// SearchBook ByAuthor
 
 	@GetMapping("/search/author")
-	public ResponseEntity<?> searchByAuthor(@RequestParam String author) {
+	public ResponseEntity<BookInfo> searchByAuthor(@RequestParam String author) {
 
 		LOGGER.info("BookInfoController:: searchByAuthor!!!!input :" + author);
 		BookInfo book = bookInfoService.searchByAuthor(author);
@@ -151,7 +151,7 @@ public class BookInfoController {
 	// update Book Book
 
 	@PutMapping("/update/{libId}")
-	public ResponseEntity<?> updateBook(@PathVariable Long libId, @RequestBody BookInfo bookInfo) {
+	public ResponseEntity<BookInfo> updateBook(@PathVariable Long libId, @RequestBody BookInfo bookInfo) {
 
 		LOGGER.info("BookInfoController:: updateBook!!!!input :" + libId);
 
@@ -172,7 +172,7 @@ public class BookInfoController {
 	// get all books
 
 	@GetMapping("/search/all")
-	public ResponseEntity<?> searchAllBooks() {
+	public ResponseEntity<List<BookInfo> > searchAllBooks() {
 
 		LOGGER.info("BookInfoController:: searchAllBooks!!!!input :");
 		List<BookInfo> books = bookInfoService.searchAllBooks();
